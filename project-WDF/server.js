@@ -1,31 +1,60 @@
+/* 
+Mathilda Hutchings huma24ey@student.ju.se
+Lidiia Yurkevych yuli24of@student.ju.se
+
+Project Web Dev Fun - 2025
+
+Administrator login: admin
+Administrator password: xxxx
+*/
+
+// --- LOAD THE PACKAGES
 const express=require('express')
+const {engine}=require('express-handlebars') // load the ahndlebars package for express
+
+// --- DEFINE VARIABLES AND CONSTANTS
 const port=8080
 const app=express()
-const sqlite3=require('sqlite3') //read the sqlite3 package
+// here or below??? in connect to database?
+const sqlite3=require('sqlite3') // read the sqlite3 package
 
+// --- DEFINE MIDDLEWARES
 app.use(express.static('public'))
+app.engine('handlebars', engine()) // initialize the engine to be handlebars
+app.set('view engine', 'handlebars') // set handlebars as the view engine
+app.set('views', './views') // define the views directory to be ./views
 
-// app.get('/', (req, res) => {
-//     res.send('Hello World')
-// })
-
-app.get('/cv', function (req, res) {
-    res.sendFile(__dirname+'/views/mycv-02.html')
- })
-
- app.get('/index', function (req, res) {
-    res.sendFile(__dirname+'/views/index.html')
- })
-// app.get('/cv02.css', function (req, res) {
-//     res.sendFile(__dirname+'/public/css/cv02.css')
-// })
-
-// app.get('/steam-profile-icon', function (req, res) {
-//     res.sendFile(__dirname+'/public/img/steam-profile-icon')
-// })
-
+// --- CONNECT TO DATABASE
+/* I don't know where to have these, if they should be where they are now, or in here
+const sqlite3=require('sqlite3') // read the sqlite3 package ????
+or
 const dbFile='my-project-db.sqlite3.db'
+*/
+
+// --- DEFINE THE ROUTES AND
+// define the default '/' ROUTE
+app.get('/', (request, response) => {
+    // res.render ('home.handlebars')
+    response.render('home')
+})
+// OR
+/*
+
+app.get('/', (request, response) => {
+    // res.render ('home.handlebars')
+    response.render('home.handlebars') // here's the change!
+})
+
+*/
+
+
+// here or above??? in connect to database?
+const dbFile='my-project-db.sqlite3.db'
+
 db = new sqlite3.Database(dbFile)
+
+
+// FROM WORKSHOP, SHOULD CREATE OUR OWN IN SQLite3 db file
 // creates table Person at startup
 db.run(`CREATE TABLE Person (pid INTEGER PRIMARY KEY, fname TEXT NOT NULL, lname
 TEXT NOT NULL, age INTEGER, email TEXT)`, function (error) {
