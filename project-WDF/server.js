@@ -30,16 +30,32 @@ db = new sqlite3.Database(dbFile)
 
 
 // --- DEFINE THE ROUTES AND DEFAULT ROUTE
-// define the default '/' ROUTE
+// define the DEFAULT '/' ROUTE
 app.get('/', (request, response) => {
     // res.render ('home.handlebars')
     response.render('home')
 })
 
-app.listen(port, () => {
-    console.log(`Server up and running on http://localhost:${port}...`)
+// rest if the page routes
+app.get('/about', (req, res) => {
+    res.render('about.handlebars')
 })
 
 app.get('/books', (req, res) => {
     res.render('books.handlebars')
+})
+
+app.get('/contact', (req, res) => {
+    res.render('contact.handlebars')
+})
+
+app.get('/login', (req, res) => {
+    res.render('login_form.handlebars')
+})
+app.get('/my-pages', (req, res) => {
+    res.render('my_pages.handlebars')
+})
+
+app.listen(port, () => {
+    console.log(`Server up and running on http://localhost:${port}...`)
 })
