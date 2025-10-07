@@ -5,29 +5,104 @@ Lidiia Yurkevych yuli24of@student.ju.se
 Project Web Dev Fun - 2025
 
 Administrator login: admin
-Administrator password: xxxx
+Administrator password: wdf#2025
 */
 
 // --- SETUP SERVER
-const express=require('express') // load express package
-// define variables and constants
-const app=express()
-const port=8080
+const express = require('express'); // load express package
+const {engine}=require('express-handlebars') // load handlebars package 
+const sqlite3=require('sqlite3'); // read the sqlite3 package
+const session = require('express-session');
+const connectSqlite3 = require('connect-sqlite3');
 
-// --- HANDLEBARS
-const {engine}=require('express-handlebars') // load handlebars package (for express)
+const app = express();
+const port = 3000;
+const adminPassword='$2b$12$ERkocBkyahF2C2A5AfTn1urDFO08qSS1TnA1FYcTJ6o4opqhzm0.e';
+const bcrypt = require('bcrypt');
+
 // setup handlebars // define middlewares
-app.use(express.static('public'))
-app.engine('handlebars', engine()) // initialize the engine to be handlebars
-app.set('view engine', 'handlebars') // set handlebars as the view engine
-app.set('views', './views') // define the views directory to be ./views
+app.use(express.static('public'));
+// ADDED BECAUSE THERE IS AN ERROR
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.json());
 
-// --- SQLITE3
-const sqlite3=require('sqlite3') // read the sqlite3 package
-// connect to database
-const dbFile='my-project-db.sqlite3.db'
-db = new sqlite3.Database(dbFile)
+// HANDLEBARS
+app.engine('handlebars', engine()); // initialize the engine to be handlebars
+app.set('view engine', 'handlebars'); // set handlebars as the view engine
+app.set('views', './views');// define the views directory to be ./views
 
+
+// connect to DATABASE
+const dbFile='my-project-db.sqlite3.db';
+ db = new sqlite3.Database(dbFile);
+const SQLiteStore = connectSqlite3(session);
+app.use (session ({
+    store: new SQLiteStore ({ db: "session db.db"}),
+    "saveUninitialized": false,
+    "resave": false,
+    "secret": "This123IS@Another#345GreatSecret987%Sentence"
+}))
+
+// MAKE THE SESSION AVAILABLE IN ALL HANDLEBARS FILES AT ONCE
+app.use((request,response,next) =>{
+    response.locals.session = request.session
+    next()
+})
+// LOGIN PAGE
+app.get('/login', (request,response) => {
+    response.render ('login')
+})
+
+
+ // LOGIN PROCESSING
+app.post('/login', (request, response) => {
+    console.log(`Here comes the data received from the form on the client: ${request.body.un} - ${request.body.pw}`);
+
+    if (request.body.un === "admin") {
+        bcrypt.compare(request.body.pw, adminPassword, (err, result) => {
+            if (err) {
+                console.log('Error in password comparison');
+                const model = { error: "Error in password comparison." };
+                return response.render('login', model);
+            }
+
+            if (result) {
+                request.session.isLoggedIn = true;
+                request.session.un = request.body.un;
+                request.session.isAdmin = true;
+
+                console.log('> SESSION INFORMATION:', JSON.stringify(request.session));
+                return response.render('loggedin');
+            } else {
+                console.log('Wrong password');
+                const model = { error: "Wrong password! Please try again." };
+                return response.render('login', model);
+            }
+        });
+    } else {
+        console.log('Wrong username');
+        const model = { error: "Wrong username! Please try again." };
+        return response.render('login', model);
+    }
+});
+
+// LOGOUT PROCESSING
+app.get('/logout', (req,res) => {
+    req.session.destroy ( (err) => {
+        if (err) {
+            console.log ("Error while destroying the session : " , err)
+            res.redirect('/')
+        } else {
+            console.log('Logged out...')
+            res.redirect('/')
+
+        }
+    })
+})
+
+
+
+ 
 
 // --- DEFINE THE ROUTES AND DEFAULT ROUTE
 // define the DEFAULT '/' ROUTE
@@ -38,24 +113,35 @@ app.get('/', (request, response) => {
 
 // rest if the page routes
 app.get('/about', (req, res) => {
-    res.render('about.handlebars')
+    res.render('about')
 })
 
 app.get('/books', (req, res) => {
-    res.render('books.handlebars')
+    res.render('books')
 })
 
 app.get('/contact', (req, res) => {
-    res.render('contact.handlebars')
+    res.render('contact')
 })
 
 app.get('/login', (req, res) => {
-    res.render('login_form.handlebars')
+    res.render('login');
 })
-app.get('/my-pages', (req, res) => {
-    res.render('my_pages.handlebars')
+app.get('/my_pages', (req, res) => {
+    res.render('my_pages')
 })
 
+function hashPassword (pw, saltRounds) {
+    bcrypt.hash (pw, saltRounds, function (err, hash){
+        if (err) {
+            HTMLFormControlsCollection.log('--->Error hashing password:',err);
+        } else {
+            console.log (`---> Hashed password:${hash}`);
+        }
+    });
+}
+
 app.listen(port, () => {
-    console.log(`Server up and running on http://localhost:${port}...`)
+    hashPassword("wdf#2025", 12); 
+    console.log(`Server running on http://localhost:${port}`)
 })
