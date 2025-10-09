@@ -1,18 +1,4 @@
-<nav>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/books">Books</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="/login">Log In</a></li>
-         {{#if user}}
-            <li>Welcome, {{user.FName}}</li>
-            <li><a href="/logout">Log Out</a></li>
-        {{else}}
-            <li><a href="/login">Log In</a></li>
-        {{/if}}
-    </ul>
-</nav>
+
 
 <main>
     <h1>Log In</h1>
@@ -22,12 +8,12 @@
     {{/if}}
 
     <form action="/login" method="POST">
-        <label for="username">Email or Full Name:</label>
-        <input type="text" id="username" name="username" placeholder="Enter your email or name" required>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="un" placeholder="Enter your username">
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <input type="password" id="password" name="pw" placeholder="Enter your password">
 
-        <button type="submit">Login</button>
+        <input type="submit" value="Login">
     </form>
 </main>
