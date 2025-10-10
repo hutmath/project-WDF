@@ -1,14 +1,19 @@
 
     <br>
 <h1>Searching for a book? Let's Explore together</h1>
-<input type="text" placeholder="Search...">
 
-<section>
+
+<div id="books"></div>
+<h1>Books</h1>
+<div>
     <ul>
-        {{#each books}}
-        <li>
-            {{Title}} Year published: {{PublishYear}}
-        </li>
+        {{#each books}} 
+        <li>  {{Title}} 
+          <img src="{{img}}" alt="{{img}}" class="smallimage"/>
+           </li>
         {{/each}}
+       
+     
     </ul>
-</section>
+</div>
+</div>
