@@ -150,8 +150,21 @@ app.get('/about', (req, res) => {
     res.render('about')
 })
 
+// app.get('/books', (req, res) => {
+//     res.render('books')
+// })
+
 app.get('/books', (req, res) => {
-    res.render('books')
+    db.all('SELECT * FROM Book', (error, theBooks) => {
+        if (error) {
+            res.render('error.handlebars')
+        } else {
+            // theBooks.forEach(element => {
+            //     console.log(element);
+            // });
+            res.render('books.handlebars', { books: theBooks })
+        }
+    })
 })
 
 app.get('/contact', (req, res) => {
