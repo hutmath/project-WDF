@@ -1,19 +1,22 @@
 
     <br>
-<h1>Searching for a book? Let's Explore together</h1>
+<h1>Let's Explore together!</h1>
 
 
 <div id="books"></div>
-<h1>Books</h1>
+<h2>Books</h2>
 <div>
-    <ul>
-        {{#each books}} 
-        <li>  {{Title}} 
-          <img src="{{img}}" alt="{{img}}" class="smallimage"/>
-           </li>
-        {{/each}}
-       
-     
-    </ul>
+  <ul>
+  {{#each books}} 
+    <li>
+       <img src="{{url}}" alt="{{bTitle}}" class="smallimage"/>
+       {{bTitle}} ({{bYear}})  <br> {{aFName}}  
+  
+    
+      
+    </li>
+  {{/each}}
+</ul>
+
 </div>
 </div>

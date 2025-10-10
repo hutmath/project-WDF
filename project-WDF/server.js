@@ -155,28 +155,17 @@ app.get('/about', (req, res) => {
 // })
 
 app.get('/books', (req, res) => {
-    db.all('SELECT * FROM AuthorHasBooks', (error, theBooks) => {
+    db.all('SELECT * FROM AuthorHasBooks', (error, rows) => {
         if (error) {
-            res.render('error.handlebars');
+            console.error(error);
+            return res.render('error.handlebars');
         }
-        // } else {
-        //     // theBooks.forEach(element => {
-        //     //     console.log(element);
-        //     // });
-        //     res.render('books.handlebars', { books: theBooks })
-        // }
 
-    //    db.all('SELECT * FROM Author', (error, theAuthors) => {
-    //     if (error) {
-    //         res.render('error.handlebars');
-    //     }
-        // } else {
-        //     // theBooks.forEach(element => {
-        //     //     console.log(element);
-        //     // });
-            res.render('books.handlebars', {books: theBooks, authors: theAuthors });
-        });
-    })
+        console.log(rows); // ✅ Check this output
+        res.render('books.handlebars', { books: rows });
+    });
+});
+
 
 app.get('/contact', (req, res) => {
     res.render('contact')
