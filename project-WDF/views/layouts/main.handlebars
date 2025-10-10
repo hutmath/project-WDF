@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+    <nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/books">Books</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        {{#if session.isLoggedIn}}
+<div class = "hej">Welcome, {{session.un}}!</div>
+<a href= "/logout">Logout</a>
+{{else}}
+<a href= "/login"> Login</a>
+{{/if}}
+    </ul>
+</nav>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/css/main.css">
+    <link rel="stylesheet" href="/css/main.css">
     <title>Yuli and Huma's Library</title>
 </head>
 <body>
     {{{ body }}}
 </body>
+<footer> <p>&copy; 2025 Yuli and Huma’s Library. All rights reserved.</p></footer>
 </html>

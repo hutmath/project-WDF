@@ -1,22 +1,14 @@
 
+<head> <link rel="stylesheet" href="/css/main.css"></head>
 
-<nav>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/books">Books</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-        {{#if session.isLoggedIn}}
-Hej, {{session.un}}!
-<a href= "/logout">Logout</a>
-{{else}}
-<a href= "/login"> Login</a>
-{{/if}}
-    </ul>
-</nav>
-<div>
-    <h1>Welcome to our Library!</h1>
-    <div>
+
+<div class="library_img">
+  <img src="/img/library_home.jpg" alt="Library">
+  <div class="banner_text">Welcome to our Library!</div>
+</div>
+
+<div class="home">
+    <div class="introduction">
         We are Yuli and Huma, a digital university library based in Sweden
         <br />
         This site helps students find their course books, and let's them read the course books as e-books. 
