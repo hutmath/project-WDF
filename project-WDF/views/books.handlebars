@@ -10,3 +10,13 @@
     <br>
 <h1>Searching for a book? Let's Explore together</h1>
 <input type="text" placeholder="Search...">
+
+<section>
+    <ul>
+        {{#each books}}
+        <li>
+            {{Title}} Year published: {{PublishYear}}
+        </li>
+        {{/each}}
+    </ul>
+</section>
